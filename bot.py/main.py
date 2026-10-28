@@ -22,7 +22,8 @@ logging.basicConfig(
 TOKEN = "9078968898:AAHsT8Kt4iQAyYbxEM0v6AMWXj3XI4MCSdU"
 
 # O'qituvchining (Admin) Telegram ID raqami
-ADMIN_ID = 5552792356  # <-- O'z Telegram ID raqamingizga o'zgartiring!
+ADMIN_ID = 5552792356
+ADMIN_ID = 8691474457  # <-- O'z Telegram ID raqamingizga o'zgartiring!
 
 
 # --- BAZA BILAN ISHLASH (Ma'lumotlarni saqlash) ---
