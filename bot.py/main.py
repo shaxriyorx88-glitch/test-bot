@@ -1,4 +1,3 @@
-
 import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -14,14 +13,14 @@ from telegram.ext import (
 # Loggingni sozlash
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 
-# O'qituvchining Telegram ID raqamini shu yerga yozing (masalan: 123456789)
-# O'zingizning ID raqamingizni @userinfobot orqali bilib olishingiz mumkin
-TEACHER_ID = 5552792356  # O'z Telegram ID raqamingizni shu yerga yozing
-# Vaqtinchalik ma'lumotlar bazasi (Xotirada saqlash uchun)
+# O'qituvchining Telegram ID raqami
+TEACHER_ID = 5552792356
+
+# Vaqtinchalik ma'lumotlar bazasi
 DATABASE = {
     "answers": "",          # Test kalitlari
-    "results": {},          # O'quvchilar natijalari {user_id: {"name": ..., "score": ...}}
-    "timer": "O'rnatilmagan" # Test vaqti
+    "results": {},          # O'quvchilar natijalari
+    "timer": "O'rnatilmagan"
 }
 
 # /start buyrug'i
@@ -30,7 +29,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_name = update.effective_user.first_name
 
     if user_id == TEACHER_ID:
-        # O'qituvchi uchun panel tugmalari
         keyboard = [
             [InlineKeyboardButton("📝 Kalitni yuklash", callback_data="set_key")],
             [InlineKeyboardButton("📂 Testni yuklash", callback_data="set_test")],
@@ -44,7 +42,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup
         )
     else:
-        # O'quvchi uchun panel
         await update.message.reply_text(
             f"Assalomu alaykum, {user_name}!\n\n"
             "🤖 Bu test tekshiruvchi bot.\n"
@@ -52,7 +49,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🏆 Umumiy reytingni ko'rish uchun /rating buyrug'ini bosing."
         )
 
-# Tugmalar bosilganda ishlaydigan funksiya (Callback query)
+# Tugmalar bosilganda ishlaydigan funksiya
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -132,7 +129,7 @@ async def check_answers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip().lower()
 
     if user_id == TEACHER_ID:
-        return # O'qituvchining matnli xabarlarini test sifatida tekshirmaydi
+        return
 
     if not DATABASE["answers"]:
         await update.message.reply_text("⚠️ Hozircha o'qituvchi tomonidan test kalitlari kiritilmagan.")
@@ -140,14 +137,12 @@ async def check_answers(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     correct_key = DATABASE["answers"]
     
-    # Ballni hisoblash logikasi
     score = 0
     min_len = min(len(text), len(correct_key))
     for i in range(min_len):
         if text[i] == correct_key[i]:
             score += 1
 
-    # Natijani saqlash
     DATABASE["results"][user_id] = {
         "name": user_name,
         "score": score
@@ -159,16 +154,14 @@ async def check_answers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 def main():
-    # Tokenni Render muhitidan xavfsiz olish
     token = os.environ.get("TOKEN")
     
     if not token:
-        print("Xatolik: TOKEN topilmadi! Render muhitini tekshiring.")
+        print("Xatolik: TOKEN topilmadi!")
         return
 
     app = ApplicationBuilder().token(token).build()
 
-    # Handler'larni ulash
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("setanswers", set_answers))
     app.add_handler(CommandHandler("settimer", set_timer))
