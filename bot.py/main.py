@@ -17,7 +17,6 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 # O'qituvchining Telegram ID raqamini shu yerga yozing (masalan: 123456789)
 # O'zingizning ID raqamingizni @userinfobot orqali bilib olishingiz mumkin
 TEACHER_ID = 5552792356  # O'z Telegram ID raqamingizni shu yerga yozing
-TEACHER_ID = 8691474457
 # Vaqtinchalik ma'lumotlar bazasi (Xotirada saqlash uchun)
 DATABASE = {
     "answers": "",          # Test kalitlari
