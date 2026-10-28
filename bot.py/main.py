@@ -217,8 +217,14 @@ async def rating(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # --- BOTNI ISHGA TUSHIRISH ---
+import os
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+
 def main():
-    app = ApplicationBuilder().token(TOKEN).build()
+    # Render'dagi Environment Variable'dan tokenni xavfsiz olish
+    token = os.environ.get("TOKEN")
+    
+    app = ApplicationBuilder().token(token).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("setanswers", set_answers))
@@ -227,7 +233,6 @@ def main():
 
     print("Bot muvaffaqiyatli ishga tushdi...")
     app.run_polling()
-
 
 if __name__ == '__main__':
     main()
